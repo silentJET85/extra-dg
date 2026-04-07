@@ -1,7 +1,6 @@
 DEFVER=1
 ARCHS_SUPPORTED="amd64 arm64"
 GPG_KEY_URL="https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg"
-APT_LIST_NAME="brave-browser-release"
 APT_REPO_URL="https://brave-browser-apt-nightly.s3.brave.com stable main"
 APT_REPO_OPTIONS="arch=${HOST_ARCH}"
 PRETTY_NAME="Brave Nightly"
