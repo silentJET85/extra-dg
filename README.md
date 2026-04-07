@@ -1,10 +1,10 @@
-#extra-dg
+# extra-dg
 
 This repository has extra packages for `deb-get`. These can include pre-releases, betas, drivers and other things not suitable for deb-get's own repository.
   
   
-##Installation
-1. If you haven't already, install `deb-get` by following [Link text]their instructions(https://github.com/wimpysworld/deb-get#install).
+## Installation
+1. If you haven't already, install `deb-get` by following [their instructions](https://github.com/wimpysworld/deb-get#install).
 2. Create the repo file:
         
     ```cat <<< "https://github.com/silentJET85/extra-dg/master" | sudo tee "/etc/deb-get/02-extra.repo"```
