@@ -1,0 +1,44 @@
+name: Update the list of apps in APPS.md
+  
+on:
+  push:
+    branches: "master"
+    paths: '02-extra/packages/*'
+
+  workflow_dispatch:
+  
+permissions:
+  contents: write 
+
+jobs:
+  update_app_list:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deb-get
+        run: |
+          sudo apt-get update
+          sudo apt install -y wget
+          wget "https://raw.githubusercontent.com/wimpysworld/deb-get/refs/heads/main/deb-get" -O /tmp/deb-get
+          chmod +x /tmp/deb-get
+          sudo mkdir /etc/deb-get
+
+      - name: Add the 02-extra repo
+        run: |
+          echo "https://raw.githubusercontent.com/silentJET85/extra-dg/master/02-extra" | sudo tee "/etc/deb-get/02-extra.repo"
+          /tmp/deb-get update
+
+      - name: Update APPS.md
+        run: echo -e "## Apps available in this repository:<br><br>\n$(/tmp/deb-get prettylist 02-extra)" > "APPS.md"
+
+      - name: Commit the change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add APPS.md
+          git commit -m "chore: auto update APPS.md"
+          git push
+          
+          
