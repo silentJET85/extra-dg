@@ -1,6 +1,7 @@
 # extra-dg
 
 This repository has extra packages for `deb-get`. These can include pre-releases, betas, drivers and other things not suitable for deb-get's own repository.
+<br> You can view the list of available apps [here](APPS.md).
   
   
 ## Installation
