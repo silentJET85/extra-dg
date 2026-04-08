@@ -31,7 +31,9 @@ jobs:
           /tmp/deb-get update
 
       - name: Update APPS.md
-        run: echo -e "## Apps available in this repository:<br><br>\n$(/tmp/deb-get prettylist 02-extra)" > "APPS.md"
+        run: |
+          echo -e "## Apps available in this repository:<br><br>\n$(/tmp/deb-get prettylist 02-extra)" > "APPS.md"
+          sed -i 's/<.*debian.png[^>]*>/Apt Repo/g; s/<.*github.png[^>]*>/Github/g; s/<.*gitlab.png[^>]*>/Gitlab/g; s/<.*launchpad.png[^>]*>/PPA/g; s/<.*direct.png[^>]*>/Website/g' APPS.md
 
       - name: Commit the change
         run: |
