@@ -3,7 +3,7 @@ name: Update the list of apps in APPS.md
 on:
   push:
     branches: "master"
-    paths: '02-extra/packages/*'
+    paths: "02-extra/packages/*"
 
   workflow_dispatch:
   
@@ -16,24 +16,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install deb-get
+      
+      - name: Build the new list
         run: |
-          sudo apt-get update
-          sudo apt install -y wget
-          wget "https://raw.githubusercontent.com/wimpysworld/deb-get/refs/heads/main/deb-get" -O /tmp/deb-get
-          chmod +x /tmp/deb-get
-          sudo mkdir /etc/deb-get
-
-      - name: Add the 02-extra repo
-        run: |
-          echo "https://raw.githubusercontent.com/silentJET85/extra-dg/master/02-extra" | sudo tee "/etc/deb-get/02-extra.repo"
-          /tmp/deb-get update
-
-      - name: Update APPS.md
-        run: |
-          echo -e "## Apps available in this repository:<br><br>\n$(/tmp/deb-get prettylist 02-extra)" > "APPS.md"
-          sed -i 's/<.*debian.png[^>]*>/Apt Repo/g; s/<.*github.png[^>]*>/Github/g; s/<.*gitlab.png[^>]*>/Gitlab/g; s/<.*launchpad.png[^>]*>/PPA/g; s/<.*direct.png[^>]*>/Website/g' APPS.md
+          OUTPUT_LIST="## Apps available in this repository:\n\n<br>\n\n"
+          OUTPUT_LIST+="| Package Name | Install Source | Description |\n"
+          OUTPUT_LIST+="| --- | --- | --- |\n"
+          mapfile -s 1 -t ALL_APPS < 02-extra/manifest
+          for APP in "${ALL_APPS[@]}"; do
+            unset WEBSITE METHOD SUMMARY
+            if ! [[ ${APP} =~ ^# ]]; then
+              WEBSITE=$(grep -o -P -m 1 "WEBSITE=\"\K[^\"]*(?=\")" "02-extra/packages/${APP}")
+              SUMMARY=$(grep -o -P -m 1 "SUMMARY=\"\K[^\"]*(?=\")" "02-extra/packages/${APP}")
+              if grep -q "get_github_releases" "02-extra/packages/${APP}"; then 
+                METHOD="Github"
+              elif grep -q "get_gitlab_releases" "02-extra/packages/${APP}"; then 
+                METHOD="Gitlab"
+              elif grep -q "APT_REPO_URL=" "02-extra/packages/${APP}"; then 
+                METHOD="Apt Repo"
+              elif grep -q "PPA=" "02-extra/packages/${APP}"; then 
+                METHOD="PPA"
+              else 
+                METHOD="Website"
+              fi
+            OUTPUT_LIST+="| [\`${APP}\`](${WEBSITE}) | ${METHOD} | ${SUMMARY} |\n"
+            fi
+          done
+          echo -e "${OUTPUT_LIST}" > APPS.md
 
       - name: Commit the change
         run: |
