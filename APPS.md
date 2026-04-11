@@ -11,5 +11,6 @@
 | [`git-butler-nightly`](https://gitbutler.com/nightly) | Website | GitButler is the Git-backed change management tool for modern, AI coding workflows. |
 | [`microsoft-edge-beta`](https://www.microsoft.com/edge) | Apt Repo | Fast and secure browser that helps you protect your data and save time and money. |
 | [`microsoft-edge-dev`](https://www.microsoft.com/edge) | Apt Repo | Fast and secure browser that helps you protect your data and save time and money. |
+| [`mullvad-browser-alpha`](https://mullvad.net/en/browser) | Apt Repo | TOR-based browser designed to minimize tracking and fingerprints. |
 | [`vivaldi-snapshot`](https://vivaldi.com/) | Apt Repo | The most feature-packaged, customisable browser. |
 
