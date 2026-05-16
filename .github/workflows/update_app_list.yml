@@ -1,4 +1,4 @@
-name: Update the list of apps in APPS.md
+name: Update the list of available apps in APPS.md
   
 on:
   push:
